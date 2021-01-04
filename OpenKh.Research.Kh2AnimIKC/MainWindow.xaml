@@ -1,0 +1,104 @@
+<Window x:Class="OpenKh.Research.Kh2AnimIKC.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OpenKh.Research.Kh2AnimIKC"
+        xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        mc:Ignorable="d"
+        Title="OpenKh.Research.Kh2AnimIKC" Height="888" Width="999">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="_Open mdlx and mset" Name="openModel" Click="openModel_Click" />
+            <MenuItem Header="_Build" Name="build" Click="build_Click" />
+            <MenuItem Header="Load another _motion ∇" Name="motions" />
+        </Menu>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="0" />
+                    </Grid.RowDefinitions>
+                    <Canvas Grid.Row="0" Name="upperView" Background="AliceBlue" SizeChanged="upperView_SizeChanged">
+                    </Canvas>
+                    <Canvas Grid.Row="1" Name="lowerView" />
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1" Background="LightGoldenrodYellow" Width="500">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" VerticalAlignment="Top" Height="150">
+                    <GroupBox Header="Bones 1">
+                        <DataGrid Name="bone1Grid" ItemsSource="{Binding}">
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
+                <Grid Grid.Row="1" VerticalAlignment="Top" Height="150">
+                    <GroupBox Header="Bones 2">
+                        <DataGrid Name="bone2Grid" ItemsSource="{Binding}">
+
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
+                <Grid VerticalAlignment="Top" Grid.Row="2">
+                    <Grid Height="200">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <GroupBox Grid.Column="0" Header="Joints">
+                            <DataGrid Name="jointsGrid" ItemsSource="{Binding}">
+
+                            </DataGrid>
+                        </GroupBox>
+                        <GroupBox Grid.Column="1" Header="IKC">
+                            <DataGrid Name="ikcGrid" ItemsSource="{Binding}">
+
+                            </DataGrid>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="3" VerticalAlignment="Top" Height="150">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Header="T6" Grid.Column="0">
+                            <DataGrid Name="t6Grid" ItemsSource="{Binding}">
+
+                            </DataGrid>
+                        </GroupBox>
+                        <GroupBox Header="T7" Grid.Column="1">
+                            <DataGrid Name="t7Grid" ItemsSource="{Binding}">
+
+                            </DataGrid>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="4" VerticalAlignment="Top" Height="200">
+                    <GroupBox Header="T8">
+                        <DataGrid Name="t8Grid" ItemsSource="{Binding}">
+
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

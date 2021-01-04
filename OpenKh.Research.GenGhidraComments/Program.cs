@@ -1,31 +1,16 @@
 using McMaster.Extensions.CommandLineUtils;
-using OpenKh.Common;
 using OpenKh.Common.Exceptions;
-using OpenKh.Kh2;
-using OpenKh.Kh2Anim.Mset;
-using OpenKh.Kh2Anim.Mset.Interfaces;
-using OpenKh.Research.Kh2Anim.Models;
-using OpenKh.Research.Kh2Anim.Subcommands;
+using OpenKh.Research.GenGhidraComments.Subcommands;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq;
-using System.Numerics;
 using System.Reflection;
-using System.Xml.Serialization;
 
-namespace OpenKh.Research.Kh2Anim
+namespace OpenKh.Research.GenGhidraComments
 {
-    [Command("OpenKh.Research.Kh2Anim")]
+    [Command("OpenKh.Research.GenGhidraComments")]
     [VersionOptionFromMember("--version", MemberName = nameof(GetVersion))]
     [Subcommand(
-        typeof(BakeCommand),
-        typeof(BakeryCommand),
-        typeof(FryCommand),
-        typeof(BurnCommand),
-        typeof(SimpleMdlxCommand),
-        typeof(SummaryMdlxsCommand)
+        typeof(GenCommand)
     )]
     class Program
     {
