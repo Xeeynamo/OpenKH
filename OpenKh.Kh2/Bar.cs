@@ -18,81 +18,84 @@ namespace OpenKh.Kh2
             [EntryType.Model] = 0x10,
             [EntryType.ModelTexture] = 0x80,
             [EntryType.Motion] = 0x10,
-            [EntryType.Tim2] = 0x40,
+            [EntryType.PS2Image] = 0x40,
             [EntryType.CameraOctalTree] = 0x10,
             [EntryType.CollisionOctalTree] = 0x10,
             [EntryType.ColorOctalTree] = 0x10,
-            [EntryType.Anb] = 0x10,
-            [EntryType.Pax] = 0x10,
+            [EntryType.AnimationBinary] = 0x10,
+            [EntryType.PAX] = 0x10,
             [EntryType.MapCollision2] = 0x10,
             [EntryType.Motionset] = 0x10,
-            [EntryType.Imgd] = 0x10,
-            [EntryType.Seqd] = 0x10,
-            [EntryType.Layout] = 0x10,
-            [EntryType.Imgz] = 0x10,
+            [EntryType.ImageData] = 0x10,
+            [EntryType.SequenceData] = 0x10,
+            [EntryType.LayoutData] = 0x10,
+            [EntryType.ImageZip] = 0x10,
             [EntryType.AnimationMap] = 0x10,
-            [EntryType.Seb] = 0x40,
-            [EntryType.Wd] = 0x40,
+            [EntryType.SeBlock] = 0x40,
+            [EntryType.InstrumentData] = 0x40,
             [EntryType.IopVoice] = 0x40,
             [EntryType.RawBitmap] = 0x80,
             [EntryType.MemoryCard] = 0x40,
             [EntryType.WrappedCollisionData] = 0x10,
-            [EntryType.Unknown39] = 0x10,
+            [EntryType.UNK39] = 0x10,
             [EntryType.Minigame] = 0x10,
             [EntryType.Progress] = 0x10,
             [EntryType.BarUnknown] = 0x10,
-            [EntryType.Vag] = 0x10,
+            [EntryType.SonyADPCM] = 0x10,
         };
 
         public enum EntryType
 		{
-			Dummy = 0,
-			Binary = 1,
-			List = 2,
-			Bdx = 3,
-			Model = 4,
-            DrawOctalTree = 5,
-            CollisionOctalTree = 6,
-			ModelTexture = 7,
-			Dpx = 8,
-			Motion = 9,
-			Tim2 = 10,
-            CameraOctalTree = 11,
-            AreaDataSpawn = 12,
-            AreaDataScript = 13,
-            FogColor = 14,
-            ColorOctalTree = 15,
-            MotionTriggers = 16,
-			Anb = 17,
-			Pax = 18,
-            MapCollision2 = 19,
-            Motionset = 20,
-            BgObjPlacement = 21,
-            Event = 22,
-            ModelCollision = 23,
-			Imgd = 24,
-			Seqd = 25,
-            Layout = 28,
-            Imgz = 29,
-			AnimationMap = 30,
-			Seb = 31,
-			Wd = 32,
-			Unknown33,
-			IopVoice = 34,
-            RawBitmap = 36,
-            MemoryCard = 37,
-            WrappedCollisionData = 38,
-            Unknown39,
-            Unknown40,
-            Unknown41,
-            Minigame = 42,
-            JimiData,
-            Progress = 44,
+            DUMMY,
+            Binary,
+            List,
+            BDX,
+            Model,
+            DrawOctalTree,
+            CollisionOctalTree,
+            ModelTexture,
+            DPX,
+            Motion,
+            PS2Image,
+            CameraOctalTree,
+            AreaDataSpawn,
+            AreaDataScript,
+            FogColor,
+            ColorOctalTree,
+            MotionTriggers,
+            AnimationBinary,
+            PAX,
+            MapCollision2,
+            Motionset,
+            BgObjPlacement,
+            Event,
+            ModelCollision,
+            ImageData,
+            SequenceData,
+            UNK26,
+            UN27K,
+            LayoutData,
+            ImageZip,
+            AnimationMap,
+            SeBlock,
+            InstrumentData,
+            UNK33,
+            IopVoice,
+            UNK35,
+            RawBitmap,
+            MemoryCard,
+            WrappedCollisionData,
+            UNK39,
+            UNK40,
+            UNK41,
+            Minigame,
+            JiminyData,
+            Progress,
             Synthesis,
-            BarUnknown = 46,
-            Vibration = 47,
-			Vag = 48,
-		}
+            BarUnknown,
+            Vibration,
+            SonyADPCM
+        }
 
         public enum MotionsetType
         {
@@ -105,7 +108,7 @@ namespace OpenKh.Kh2
 		{
 			public EntryType Type { get; set; }
 
-			public int Index { get; set; }
+			public bool Duplicate { get; set; }
 
 			public string Name { get; set; }
 
@@ -148,7 +151,7 @@ namespace OpenKh.Kh2
                 .Select(x => new
                 {
                     Type = (EntryType)reader.ReadUInt16(),
-                    Index = reader.ReadInt16(),
+                    Duplicate = reader.ReadInt16() == 1 ? true : false,
                     Name = Encoding.UTF8.GetString(reader.ReadBytes(4)),
                     Offset = reader.ReadInt32(),
                     Size = reader.ReadInt32()
@@ -169,7 +172,7 @@ namespace OpenKh.Kh2
                     return new Entry
                     {
                         Type = x.Type,
-                        Index = x.Index,
+                        Duplicate = x.Duplicate,
                         Name = name,
                         Offset = x.Offset,
                         Stream = fileStream
@@ -212,10 +215,10 @@ namespace OpenKh.Kh2
                 offset = Align(offset, entry);
 
                 writer.Write((ushort)entry.Type);
-				writer.Write((ushort)entry.Index);
+				writer.Write(entry.Duplicate == true ? (ushort)1 : (ushort)0);
 				writer.Write(Encoding.UTF8.GetBytes(normalizedName), 0, 4);
 
-                if (entry.Index != 0)
+                if (entry.Duplicate != false)
                 {
                     var linkInfo = dicLink[(entry.Name, entry.Type)];
                     entry.Offset = linkInfo.offset;
@@ -239,7 +242,7 @@ namespace OpenKh.Kh2
 			foreach (var entry in myEntries)
             {
                 writer.BaseStream.Position = entry.Offset;
-                if (entry.Index == 0)
+                if (entry.Duplicate == false)
                 {
                     entry.Stream.Position = 0;
                     entry.Stream.CopyTo(writer.BaseStream);

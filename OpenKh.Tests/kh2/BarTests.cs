@@ -94,13 +94,13 @@ namespace OpenKh.Tests.kh2
             File.OpenRead(FilePath).Using(stream =>
             {
                 var entries = Bar.Read(stream);
-                Assert.Equal(0, entries[0].Index);
-                Assert.Equal(0, entries[1].Index);
-                Assert.Equal(0, entries[2].Index);
-                Assert.Equal(0, entries[3].Index);
-                Assert.Equal(0, entries[4].Index);
-                Assert.Equal(0, entries[5].Index);
-                Assert.Equal(0, entries[6].Index);
+                Assert.False(entries[0].Duplicate);
+                Assert.False(entries[1].Duplicate);
+                Assert.False(entries[2].Duplicate);
+                Assert.False(entries[3].Duplicate);
+                Assert.False(entries[4].Duplicate);
+                Assert.False(entries[5].Duplicate);
+                Assert.False(entries[6].Duplicate);
             });
 
         [Fact]
@@ -177,8 +177,8 @@ namespace OpenKh.Tests.kh2
             {
                 new Bar.Entry
                 {
-                    Type = Bar.EntryType.Dummy,
-                    Index = 0,
+                    Type = Bar.EntryType.DUMMY,
+                    Duplicate = false,
                     Name = name,
                     Stream = new MemoryStream()
                 }

@@ -1,14 +1,16 @@
-using static OpenKh.Kh2.Bar;
 using System.Collections.Generic;
 
-namespace OpenKh.Command.Bar
+using OpenKh.Kh2;
+using static OpenKh.Kh2.Bar;
+
+namespace OpenKh.Tools.BarTool
 {
     public class Helpers
     {
         private static readonly string DefaultExtension = "bin";
 
         private static readonly Dictionary<EntryType, string> SuggestedExtensions =
-            new Dictionary<EntryType, string>
+            new Dictionary<Bar.EntryType, string>
             {
                 [EntryType.DUMMY] = "dummy",
                 [EntryType.Binary] = "bin",
@@ -58,7 +60,7 @@ namespace OpenKh.Command.Bar
                 [EntryType.SonyADPCM] = "vag",
             };
 
-        public static string GetSuggestedExtension(EntryType type) =>
+        public static string GetSuggestedExtension(Bar.EntryType type) =>
             SuggestedExtensions.TryGetValue(type, out var ext) ? ext : DefaultExtension;
     }
 }
